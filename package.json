@@ -1,0 +1,9 @@
+{
+  "name": "io-ts-form",
+  "author": {
+    "name": "Kellen Frodelius-Fujimoto",
+    "url": "https://github.com/rakenodiax"
+  },
+  "version": "0.1.0",
+  "license": "MPL-2.0"
+}
