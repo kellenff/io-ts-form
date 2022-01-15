@@ -1,0 +1,23 @@
+name: Automated tests
+on: push
+jobs:
+  test:
+    if: ${{ github.event.action != 'closed' }}
+    name: tests / integrated
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+      - name: Install Yarn
+        run: npm i -g yarn@1.22.17
+      - name: Install Dependencies
+        run: yarn install --non-interactive --no-progress --emoji false
+      - run: yarn run test-ci
+      - name: Test Report
+        uses: dorny/test-reporter@v1
+        # Run the report even if the previous step failed
+        if: ${{ success() || failure() }}
+        with:
+          name: reporter / jest-junit
+          path: '**/reports/junit.xml'
+          reporter: jest-junit
