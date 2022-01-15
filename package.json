@@ -7,6 +7,7 @@
   "version": "0.1.0",
   "license": "MPL-2.0",
   "scripts": {
+    "test": "jest",
     "test-ci": "jest '__tests__/'",
     "pre-commit": "yarn pretty-quick && yarn lint-staged && yarn tsc -p tsconfig.json --noEmit",
     "prepare": "husky install"
