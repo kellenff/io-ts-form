@@ -1,0 +1,33 @@
+name: Code Checks
+on: pull_request
+jobs:
+  tsc:
+    if: ${{ github.event.action != 'closed' }}
+    name: check / tsc
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+      - name: Install Yarn
+        run: npm i -g yarn@1.22.17
+      - name: Install Dependencies
+        run: yarn install --non-interactive --no-progress --emoji false
+      - name: Type Check
+        run: yarn tsc --project tsconfig.json
+  eslint:
+    if: ${{ github.event.action != 'closed' }}
+    name: check / eslint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+      - name: Install Yarn
+        run: npm i -g yarn@1.22.17
+      - name: Install Dependencies
+        run: yarn install --non-interactive --no-progress --emoji false
+      - name: ESLint
+        uses: reviewdog/action-eslint@v1
+        with:
+          github_token: ${{ secrets.github_token }}
+          # Add PR review comment for each changed line
+          reporter: github-pr-review
