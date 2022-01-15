@@ -8,7 +8,7 @@
   "license": "MPL-2.0",
   "scripts": {
     "test": "jest",
-    "test-ci": "jest --reporters=jest-junit '__tests__/'",
+    "test-ci": "jest --reporters=jest-junit --testMatch='**/__tests__/**/*.[jt]s?(x)'",
     "pre-commit": "yarn pretty-quick && yarn lint-staged && yarn tsc -p tsconfig.json --noEmit",
     "prepare": "husky install"
   },
