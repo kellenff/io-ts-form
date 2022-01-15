@@ -11,9 +11,9 @@ settings:
     version: detect
 plugins:
   - prettier
-  - @typescript-eslint
+  - '@typescript-eslint'
   - react
-parser: @typescript-eslint/parser
+parser: '@typescript-eslint/parser'
 parserOptions:
   ecmaVersion: 2021
   jsx: true
