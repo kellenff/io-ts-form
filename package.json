@@ -1,16 +1,26 @@
 {
-  "name": "io-ts-form",
+  "name": "@rakenodiax/io-ts-form",
   "author": {
     "name": "Kellen Frodelius-Fujimoto",
     "url": "https://github.com/rakenodiax"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rakenodiax/io-ts-form"
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "/dist"
+  ],
   "version": "0.1.0",
   "license": "MPL-2.0",
   "scripts": {
+    "build": "tsc -p tsconfig.json",
     "test": "jest",
     "test-ci": "jest --reporters=jest-junit --testMatch='**/__tests__/**/*.[jt]s?(x)'",
     "pre-commit": "yarn pretty-quick && yarn lint-staged && yarn tsc -p tsconfig.json --noEmit",
-    "prepare": "husky install"
+    "prepare": "yarn build"
   },
   "jest-junit": {
     "outputDirectory": "reports"
