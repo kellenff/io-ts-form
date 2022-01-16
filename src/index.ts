@@ -1,6 +1,7 @@
 import {FormEvent, useEffect, useState} from 'react';
-import {htmlInputExtractor} from './util';
 import * as t from 'io-ts';
+
+const htmlInputExtractor = (e: FormEvent<HTMLInputElement>) => e.currentTarget.value;
 
 export type UseFormOptions<V> = {
   type?: t.Type<V>;
