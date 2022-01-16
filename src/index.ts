@@ -1,11 +1,23 @@
-import {FormEvent, useState} from 'react';
+import {FormEvent, useEffect, useState} from 'react';
 import {htmlInputExtractor} from './util';
+import * as t from 'io-ts';
 
-export const useForm = <T extends object>(init: T) => {
-  const [form, setForm] = useState<T>(init);
+export type UseFormOptions<V> = {
+  type?: t.Type<V>;
+};
+
+export const useForm = <V extends object>(init: V, options?: UseFormOptions<V>) => {
+  const [form, setForm] = useState<V>(init);
+  const [isValid, setIsValid] = useState(options?.type?.is(init) ?? true);
+
+  useEffect(() => {
+    if (options?.type) {
+      setIsValid(options.type.is(form));
+    }
+  }, [options?.type, setIsValid, form]);
 
   const update =
-    <K extends keyof T>(key: K) =>
+    <K extends keyof V>(key: K) =>
     (event: FormEvent<HTMLInputElement>) => {
       setForm({
         ...form,
@@ -13,10 +25,10 @@ export const useForm = <T extends object>(init: T) => {
       });
     };
 
-  const field = (key: keyof T) => ({
+  const field = (key: keyof V) => ({
     onChange: update(key),
     value: form[key],
   });
 
-  return {form, setForm, field, update};
+  return {form, setForm, field, update, isValid, setIsValid};
 };
