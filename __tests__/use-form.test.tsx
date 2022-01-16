@@ -76,16 +76,6 @@ describe('useForm', () => {
   });
 
   describe('Validation', () => {
-    it('should always be valid if no type is passed', () => {
-      const {getByTestId} = render(<Validation decoder={decoder} encoder={encoder} />);
-
-      expect(getByTestId('input').getAttribute('value')).toEqual('true');
-
-      fireEvent.change(getByTestId('input'), {target: {value: 'test'}});
-
-      expect(getByTestId('input').getAttribute('value')).toEqual('true');
-    });
-
     it('should validate on valid input', () => {
       const {getByTestId} = render(<Validation decoder={decoder} encoder={encoder} />);
 
