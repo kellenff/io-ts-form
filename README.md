@@ -9,9 +9,9 @@ import * as t from 'io-ts';
 import * as C from 'io-ts/Codec';
 import * as D from 'io-ts/Decoder';
 import * as E from 'fp-ts/Either';
-import {emailType, passwordType} from './types';
 import {pipe} from 'fp-ts/function';
-import {useForm} from './index';
+import {useForm} from '@rakenodiax/io-ts-form';
+import {emailType, passwordType} from './types';
 
 /**
  * The form data
