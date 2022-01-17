@@ -1,4 +1,4 @@
-import {FormEvent, HTMLProps, useState} from 'react';
+import {FormEvent, FormEventHandler, HTMLProps, useState} from 'react';
 import * as t from 'io-ts';
 import * as C from 'io-ts/Codec';
 import * as D from 'io-ts/Decoder';
@@ -14,6 +14,7 @@ type UseFormValue<V extends object, K extends keyof V> = {
   field: (name: K) => Partial<HTMLProps<HTMLInputElement>>;
   update: (name: K) => (event: FormEvent<HTMLInputElement>) => void;
   isValid: boolean;
+  submit: (handler: (data: t.OutputOf<t.Type<V>>) => void) => FormEventHandler<HTMLFormElement>;
 };
 
 export type FormData<K extends string | number | symbol> = Record<K, HTMLInputElement['value']>;
@@ -26,6 +27,29 @@ export function useForm<V extends object, T extends t.OutputOf<t.Type<V>>, K ext
   const [data, setData] = useState<T | null>(null);
 
   const isValid = error === null;
+
+  const handleSubmit =
+    (handler: (data: T) => void): FormEventHandler<HTMLFormElement> =>
+    (event) => {
+      event.preventDefault();
+
+      if (typeof event.currentTarget === 'undefined') {
+        return;
+      }
+
+      const formData: FormData<K> = [...new FormData(event.currentTarget).entries()].reduce(
+        (acc, [k, v]) => ({...acc, [k]: v}),
+        {} as FormData<K>,
+      );
+
+      const decoded = codec.decode(formData);
+
+      if (E.isRight(decoded)) {
+        handler(decoded.right);
+      } else {
+        setError(decoded.left);
+      }
+    };
 
   const handleSetForm = (form: FormData<K>) => {
     const decodeResult = codec.decode(form);
@@ -58,5 +82,5 @@ export function useForm<V extends object, T extends t.OutputOf<t.Type<V>>, K ext
     value: form[key],
   });
 
-  return {form, setForm: handleSetForm, data, field, update, isValid};
+  return {form, setForm: handleSetForm, data, submit: handleSubmit, field, update, isValid};
 }

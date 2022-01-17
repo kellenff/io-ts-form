@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - Support for `io-ts/Codec/Codec` to validate and conform the form's values
+- Callback for validation on form submit, for use with uncontrolled form inputs
 
 ### Changed
 
