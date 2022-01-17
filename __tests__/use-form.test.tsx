@@ -42,6 +42,19 @@ const Validation: VFC<Props> = ({decoder, encoder}) => {
   );
 };
 
+const HandleSubmit: VFC<Props & {handler: (data: any) => void}> = ({decoder, encoder, handler}) => {
+  const {submit} = useForm(C.make(decoder, encoder));
+
+  return (
+    <form onSubmit={submit(handler)}>
+      <input data-testid="input" type="text" name="test" />
+      <button data-testid="submit" type="submit">
+        Submit
+      </button>
+    </form>
+  );
+};
+
 describe('useForm', () => {
   const testType = t.type({test: t.literal('test')});
   type TestType = t.OutputOf<typeof testType>;
@@ -90,6 +103,48 @@ describe('useForm', () => {
       fireEvent.change(getByTestId('input'), {target: {value: 'tent'}});
 
       expect(getByTestId('input').getAttribute('value')).toEqual('false');
+    });
+  });
+
+  describe('Uncontrolled', () => {
+    it('should call the handler on a valid form', () => {
+      const handler = jest.fn();
+
+      const {getByTestId} = render(
+        <HandleSubmit decoder={decoder} encoder={encoder} handler={handler} />,
+      );
+
+      fireEvent.change(getByTestId('input'), {target: {value: 'test'}});
+      fireEvent.click(getByTestId('submit'));
+
+      expect(handler).toHaveBeenCalledWith({test: 'test'});
+    });
+
+    it('should not call the handler if an invalid form', () => {
+      const handler = jest.fn();
+
+      const type = t.type({
+        test: t.literal('test'),
+      });
+      const decoder: D.Decoder<unknown, t.OutputOf<typeof type>> = {
+        decode: (v) =>
+          pipe(
+            type.decode(v),
+            E.fold(
+              (e) => D.failure(v, e.toString()),
+              (v) => D.success(v),
+            ),
+          ),
+      };
+
+      const {getByTestId} = render(
+        <HandleSubmit decoder={decoder} encoder={encoder} handler={handler} />,
+      );
+
+      fireEvent.change(getByTestId('input'), {target: {value: 'tent'}});
+      fireEvent.click(getByTestId('submit'));
+
+      expect(handler).toHaveBeenCalledTimes(0);
     });
   });
 });
