@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.2.0] - 2022-01-16
+
 ### Added
 
 - Support for `io-ts/Codec/Codec` to validate and conform the form's values
@@ -28,4 +30,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Option `type` for naive object validation of form values
 
 [unreleased]: https://github.com/rakenodiax/io-ts-form/compare/v0.1.0...HEAD
+[0.2.0]: https://github.com/rakenodiax/io-ts-form/compare/v0.1.0...v0.2.0
 [0.1.0]: https://github.com/rakenodiax/io-ts-form/releases/tag/v0.1.0
